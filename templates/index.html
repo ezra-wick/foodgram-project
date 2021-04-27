@@ -1,0 +1,52 @@
+{% load user_filters %}
+{% load templates_filters %}
+{% csrf_token %}
+<!doctype html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Рецепты</title>
+    <link rel="stylesheet" href="{% static '/pages/index.css' %}">
+</head>
+<body class="body">
+    
+    {% include 'nav.html' with index=True%}
+    <main class="main container">
+        {% csrf_token %}
+        <div class="main__header">
+            <h1 class="main__title">Рецепты</h1>
+                {% include 'tags.html' with url=request.path food_time=food_time %}
+        </div>
+        <div class='card-list'>
+            <!-- Вывод ленты записей -->
+                {% for recipe in page %}
+                    {% include 'recipe.html' with recipe=recipe %}
+                {% endfor %}
+        </div>
+        <!-- Вывод паджинатора -->
+        {% include "paginator.html" %}
+    </main>
+    {% include 'footer.html' %}
+    <script src="{% static 'js/config/config.js' %}"></script>
+    {% if user.is_authenticated %}
+    <script src="{% static 'js/components/MainCards.js' %}"></script>
+    <script src="{% static 'js/components/Purchases.js' %}"></script>
+    <script src="{% static 'js/components/Favorites.js' %}"></script>
+    <script src="{% static 'js/components/CardList.js' %}"></script>
+    <script src="{% static 'js/components/Header.js' %}"></script>
+    <script src="{% static 'js/api/Api.js' %}"></script>
+    <script src="{% static 'indexAuth.js' %}"></script>
+    {% else %}
+    <script src="{% static 'js/components/MainCards.js' %}"></script>
+    <script src="{% static 'js/components/Purchases.js' %}"></script>
+    <script src="{% static 'js/components/CardList.js' %}"></script>
+    <script src="{% static 'js/components/Header.js' %}"></script>
+    <script src="{% static 'js/api/Api.js' %}"></script>
+    <script src="{% static 'indexNotAuth.js' %}"></script>
+    {% endif %}
+</body>
+</html>
