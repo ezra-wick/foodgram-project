@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="{% static '/pages/form.css' %}">
 </head>
 <body class="body">
-{% include 'nav.html' with new_recipe=True%}
+{% include 'includes/nav.html' with new_recipe=True%}
 <main class="main container">
     <div class="main__header">
         <h1 class="main__title">Создание рецепта</h1>
@@ -31,19 +31,18 @@
                     <p class="form__label">Теги</p>
                     <div class="form__field-group">
                         <div class="tags">
-                          
+                            {% for tag in form.fields.tags.choices.queryset %}
                             <div class="tags__item">
-                                {{ form.breakfast|addclass:"tags__checkbox tags__checkbox_style_green" }}
-                                <label for="id_breakfast" class="tags__label">Завтрак</label>
-                             </div>
-                             <div class="tags__item">
-                                {{ form.lunch|addclass:"tags__checkbox tags__checkbox_style_orange" }}
-                                <label for="id_lunch" class="tags__label">Обед</label>
-                             </div>
-                             <div class="tags__item">
-                                {{ form.dinner|addclass:"tags__checkbox tags__checkbox_style_purple" }}
-                                <label for="id_dinner" class="tags__label">Ужин</label>
+                              <input 
+                                type="checkbox" 
+                                name="tags" 
+                                id="id_{{ tag.name }}"
+                                class="tags__checkbox tags__checkbox_style_{{ tag.color }}"
+                                value="{{ tag.pk }}"
+                                {% if tag.pk in form.tags.value %}checked{% endif %}>
+                              <label for="id_{{ tag.name }}" class="tags__label">{{ tag.display_name }}</label>
                             </div>
+                          {% endfor %}
                         </div>
                         {% for error in form.errors %}
                         <span class="form__error">
@@ -102,22 +101,24 @@
                 <div class="form__group">
                     <span class="form__label">Загрузить фото</span>
                     <div class="form__field-group">
-                    {{ form.image|addclass:"file"}}
+                    {{ form.image|addclass:'form__file-button' }}
     
-                        <span class="form__error">{{ form.image.errors }}</span>
+                    <span class="form__error">{{ form.image.errors }}</span>
                     </div>
                 </div>
                 <div class="form__footer">
-                
-                    <button class="button button_style_blue"> Создать рецепт</button>
-
-                </div>
+                    <button class="button button_style_blue">
+                      {% if recipe %}
+                        Сохранить </button> <a style="margin-left: 2.5em" href="{% url 'recipe_delete' recipe.author recipe.id %}" class="form__ingredient-link">Удалить</a>
+                      {% else %}
+                      Создать рецепт
+                      {% endif %}</button>
+                  </div>
             </form>
     </div>
 
 
 </main>
-{% include 'footer.html' %}
 <script src="{% static 'js/config/config.js' %}"></script>
 <script src="{% static 'js/components/Header.js' %}"></script>
 <script src="{% static 'js/utils/debouncing.js' %}"></script>

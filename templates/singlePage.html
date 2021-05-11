@@ -1,24 +1,16 @@
+{% extends 'base.html' %}
+{% block title%}{{ recipe.title }}{% endblock%}
 {% load static %}
 {% load user_filters %}
 {% load templates_filters%}
 {% csrf_token %}
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Французские тосты</title>
+{% block static %}
     <link rel="stylesheet" href="{% static '/pages/single.css' %}">
-</head>
-<body class="body">
-<header class="header">
-    {% include 'nav.html' with index=True%}
-</header>
+{% endblock %}
+{% block content %}
+{% include 'includes/nav.html' with index=True %}
 <main class="main container">
     <div class="single-card" data-id="{{ recipe.id }}" data-author="{{ recipe.author.id }}">
-    
     {% load thumbnail %}
     {% thumbnail recipe.image "600x300" crop="center" upscale=True as im %}
     <img src="{{ im.url }}" alt="Автор не добавил фото" class="single-card__image"></a>
@@ -45,20 +37,12 @@
                                      
                 </div>
             </div>
-
+            
             <ul class="single-card__items">
-                {% if recipe.lunch %}
-                <li class="single-card__item"><span class="badge badge_style_green">Обед</span></li>
-                {% endif %}
-                {% if recipe.breakfast %}
-                <li class="single-card__item"><span class="badge badge_style_orange">Завтрак</span></li>
-                {% endif %}
-                {% if recipe.dinner %}
-                <li class="single-card__item"><span class="badge badge_style_purple">Ужин</span></li>
-                {% endif %}
+                {% for tag in recipe.tags.all %}
+                  <li class="single-card__item"><span class="badge badge_style_{{ tag.color }}">{{ tag.display_name }}</span></li>
+                {% endfor %}
             </ul>
-
-          
 
             <div class="single-card__items single-card__items_column">
                 <p class="single-card__text"><span class="icon-time"></span> {{ recipe.cooking_time}} мин.</p>
@@ -72,7 +56,7 @@
                 </ul>
             </div>
             <ul class="single-card__items">
-            {% include 'buy_button.html' %}
+            {% include 'includes/buy_button.html' %}
         {% if user.username != profile.username %}
              {% if user.is_authenticated %}
                 {% if recipe.author|is_follow:user %}
@@ -100,7 +84,6 @@
     </div>
 
 </main>
-{% include 'footer.html' %}
     <script src="{% static 'js/config/config.js' %}"></script>
     {% if user.is_authenticated %}
     <script src="{% static 'js/components/Purchases.js' %}"></script>
@@ -123,5 +106,4 @@
     <script src="{% static 'js/api/Api.js' %}"></script>
     <script src="{% static 'singlePageNotAuth.js' %}"></script>
     {% endif %} 
-</body>
-</html>
+{% endblock %}

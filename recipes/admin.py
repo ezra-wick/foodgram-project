@@ -1,8 +1,8 @@
 from django.contrib import admin
 from django.db import models
-from recipes.models import Recipe, IngredientRecipe, \
-    Ingredients, FollowRecipe, FollowUser, \
-    ShopingList
+from recipes.models import (Recipe, IngredientRecipe,
+                            Ingredient, FollowRecipe,
+                            FollowUser, ShopingList, Tag)
 from django.forms import CheckboxSelectMultiple
 
 
@@ -32,7 +32,7 @@ class IngredientsAdmin(admin.ModelAdmin):
     inlines = (IngredientRecipeInline,)
 
 
-admin.site.register(Ingredients, IngredientsAdmin)
+admin.site.register(Ingredient, IngredientsAdmin)
 
 
 class ShopingListAdmin(admin.ModelAdmin):
@@ -60,3 +60,11 @@ class FlRecAdmin(admin.ModelAdmin):
 
 
 admin.site.register(FollowRecipe, FlRecAdmin)
+
+
+class TagAdmin(admin.ModelAdmin):
+    list_display = ('title', 'color', 'display_name')
+    list_filter = ('title', )
+
+
+admin.site.register(Tag, TagAdmin)

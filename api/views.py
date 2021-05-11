@@ -3,15 +3,9 @@ from django.contrib.auth.models import User
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.views import View
-from rest_framework.response import Response
 from rest_framework.utils import json
-from rest_framework import filters, mixins, viewsets, status
-from .serializers import (IngredientSerializer, SubscriptionSerializer,
-                          FavoriteSerializer, PurchaseSerializer)
-
-
 from recipes.models import (
-    Ingredients,
+    Ingredient,
     Recipe,
     FollowRecipe,
     FollowUser,
@@ -19,25 +13,27 @@ from recipes.models import (
 )
 
 
-class Ingredient(LoginRequiredMixin, View):
+class IngredientApi(LoginRequiredMixin, View):
     def get(self, request):
-        text = request.GET['query']
-        ingredients = list(Ingredients.objects.filter(
+        text = request.GET['query'] or None
+        ingredients = list(Ingredient.objects.filter(
             title__icontains=text).values('title', 'dimension'))
         return JsonResponse(ingredients, safe=False)
+
 
 class Favorites(LoginRequiredMixin, View):
     def post(self, request):
         req = json.loads(request.body)
+        # Я не понял(
         recipe_id = req.get('id', None)
         if recipe_id:
             recipe = get_object_or_404(Recipe, id=recipe_id)
-            obj, created = FollowRecipe.objects.get_or_create(
+            _, created = FollowRecipe.objects.get_or_create(
                 user=request.user, recipe=recipe
             )
-            if created:
-                return JsonResponse({'success': True})
-            return JsonResponse({'success': False})
+            # вы наверное не это имели ввиду, но по другому у меня ошибка
+            return JsonResponse(
+                {'success': True} if created else {'success': False})
         return JsonResponse({'success': False}, status=400)
 
     def delete(self, request, recipe_id):
@@ -54,18 +50,17 @@ class Subscribe(LoginRequiredMixin, View):
         author_id = req.get('id', None)
         if author_id is not None:
             author = get_object_or_404(User, id=author_id)
-            obj, created = FollowUser.objects.get_or_create(
+            _, created = FollowUser.objects.get_or_create(
                 user=request.user, author=author
             )
-            if created:
-                return JsonResponse({'success': True})
-            return JsonResponse({'success': False})
+            return JsonResponse(
+                {'success': True} if created else {'success': False})
         return JsonResponse({'success': False}, status=400)
 
     def delete(self, request, author_id):
         obj = get_object_or_404(
-            FollowUser, 
-            user__username=request.user.username, 
+            FollowUser,
+            user__username=request.user.username,
             author__id=author_id)
         obj.delete()
         return JsonResponse({'success': True})
@@ -73,6 +68,7 @@ class Subscribe(LoginRequiredMixin, View):
 
 class Purchase(LoginRequiredMixin, View):
     def post(self, request):
+        # Я не понял(
         recipe_id = json.loads(request.body)['id']
         recipe = get_object_or_404(Recipe, id=recipe_id)
         ShopingList.objects.get_or_create(user=request.user, recipe=recipe)
@@ -80,8 +76,8 @@ class Purchase(LoginRequiredMixin, View):
 
     def delete(self, request, recipe_id):
         obj = get_object_or_404(
-            ShopingList, 
-            user__username=request.user.username, 
+            ShopingList,
+            user__username=request.user.username,
             recipe__id=recipe_id)
         obj.delete()
         return JsonResponse({'success': True})

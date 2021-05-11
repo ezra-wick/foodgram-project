@@ -10,20 +10,20 @@
 
 {% block content %}
 {% csrf_token %}
-{% include 'nav.html' with follow=True%}
+{% include 'includes/nav.html' with follow=True%}
 <main class="main container">
         <div class="main__header">
             <h1 class="main__title">Мои подписки</h1>
         </div>
         {% for follow in page %}
     <div class="card-list">
-        <div class="card-user" data-author="{{ follow.author.pk }}">
+        <div class="card-user" data-author="{{ follow.pk }}">
         <div class="card-user__header">
-            <h2 class="card-user__title">{{ follow.author.get_full_name }}</h2>
+            <h2 class="card-user__title">{{ follow }}</h2>
         </div>
         <div class="card-user__body">
             <ul class="card-user__items">
-                {% for recipe in follow.author|get_recipes %}
+                {% for recipe in follow|get_recipes %}
                 <li class="card-user__item">
                     <div class="recipe">
                     {% load thumbnail %}
@@ -35,9 +35,9 @@
                     </div>
                 </li>
                 {% endfor %}
-                {% if follow.author|get_count_recipes %}
+                {% if follow|get_count_recipes %}
                 <li class="card-user__item">
-                    <a href="{% url 'profile' follow.author %}" class="card-user__link link">{{ follow.author|get_count_recipes }}</a>
+                    <a href="{% url 'profile' follow %}" class="card-user__link link">{{ follow|get_count_recipes }}</a>
                 </li>
                 {% endif %}
             </ul>
@@ -50,8 +50,6 @@
 {% endfor %}
 {% include "paginator.html" %}
 </main>    
-{% include 'footer.html' %}
-
 <script src="{% static 'js/config/config.js' %}"></script>
 <script src="{% static 'js/components/MainCards.js' %}"></script>
 <script src="{% static 'js/components/MyFollow.js' %}"></script>

@@ -23,7 +23,8 @@ def get_filter_link(request, tag):
 
 @register.filter(name='is_shop')
 def is_shop(recipe, user):
-    return ShopingList.objects.filter(user=user, recipe=recipe).exists()
+    return ShopingList.objects.select_related('recipe') \
+                      .filter(user=user, recipe=recipe)
 
 
 @register.filter(name='is_favorite')
@@ -38,23 +39,46 @@ def is_follow(author, user):
 
 @register.filter(name='get_recipes')
 def get_recipes(author):
-    return Recipe.objects.select_related("author").filter(author=author)[:3]
+    return Recipe.objects.select_related('author').filter(author=author)[:3]
 
 
 @register.filter(name='get_count_recipes')
 def get_count_recipes(author):
-# Значение "3" выбрано для правильного расчета и склонения количества рецептов,
-# которые будут выводиться дополнительной кнопкой количества рецептов
-# у одного автора (для одного автора выводится 3 рецепта)
-    count = author.recipes.count() - 3
-    if count < 1:
-        return False
+    """
+    Значение '3' выбрано для правильного расчета и
+    склонения количества рецептов, которые будут
+    выводиться дополнительной кнопкой количества
+    рецептов у одного автора (для одного автора
+    выводится 3 рецепта)
+    """
+    if author is not None:
+        count = author.recipes.count() - 3
+        if count < 1:
+            return False
 
-    if count % 10 == 1 and count % 100 != 11:
-        end = 'рецепт'
-    elif 2 <= count % 10 <= 4 and (count % 100 < 10 or count % 100 >= 20):
-        end = 'рецепта'
+        if count % 10 == 1 and count % 100 != 11:
+            end = 'рецепт'
+        elif 2 <= count % 10 <= 4 and (count % 100 < 10 or count % 100 >= 20):
+            end = 'рецепта'
+        else:
+            end = 'рецептов'
+
+        return f'Еще {count} {end}...'
+
+
+@register.filter(name='parse_tags')
+def parse_tags(get):
+    return get.getlist('tag')
+
+
+@register.filter(name='set_tag_qs')
+def set_tag_qs(request, tag):
+    new_req = request.GET.copy()
+    tags = new_req.getlist('tag')
+    if tag.title in tags:
+        tags.remove(tag.title)
     else:
-        end = 'рецептов'
+        tags.append(tag.title)
 
-    return f'Еще {count} {end}...'
+    new_req.setlist('tag', tags)
+    return new_req.urlencode()

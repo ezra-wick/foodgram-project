@@ -3,17 +3,12 @@
 {% load static %}
 {% csrf_token %}
 {% block static %}
-    <link rel="stylesheet" href={% static 'pages/shopList.css' %}>
+    <link rel="stylesheet" href="{% static 'pages/shopList.css' %}">
 {% endblock %}
 {% load user_filters %}
 {% load templates_filters %}
-
-
-
 {% block content %}
-
-{% include 'nav.html' with purchases=True%}
-
+{% include 'includes/nav.html' with purchases=True%}
 <main class="main container">
     <div class="main__header">
         <h1 class="main__title">Список покупок</h1>
@@ -44,9 +39,6 @@
 
     </div>
 </main>
-
-{% include 'footer.html' %}
-
 <script src="{% static 'js/config/config.js' %}"></script>
 <script src="{% static 'js/components/Header.js' %}"></script>
 <script src="{% static 'js/components/ShopList.js' %}"></script>

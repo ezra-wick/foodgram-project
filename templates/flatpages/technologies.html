@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %} Recipes to {{ username.get_full_name }} {% endblock %}
+{% load static %}
+{% block static %}
+    <link rel="stylesheet" href="{% static 'pages/index.css' %}">
+{% endblock %}
+{% block content %}
+{% include 'includes/nav.html' with index=True %}
+<main class="main container">
+    <div class="main__header">
+        <h1 class="main__title">Об авторе</h1>
+    </div>
+    <div class='card-list'>
+    <p>
+        Более подробно о проекте вы можете узнать по
+        <a href="https://github.com/ezra-wick/foodgram-project/">этой</a> 
+        ссылке
+    </p>
+    </div>
+    <br><br><br><br><br>
+</div>
+{% endblock %}

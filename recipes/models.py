@@ -1,14 +1,20 @@
 from django.db import models
 from django.contrib.auth import get_user_model
-from sorl.thumbnail import ImageField
+from django.core.validators import MinValueValidator
 
 User = get_user_model()
 
 
-class Ingredients(models.Model):
-    title = models.CharField(max_length=200, null=True, blank=True)
+class Ingredient(models.Model):
+    title = models.CharField(max_length=200, null=True,
+                             blank=True, db_index=True,
+                             verbose_name="Ингредиент")
     dimension = models.CharField(max_length=200, null=True, blank=True)
     description = models.TextField(max_length=200, blank=True, null=True)
+
+    class Meta:
+        verbose_name = 'ингредиент'
+        verbose_name_plural = 'ингредиенты'
 
     def __str__(self):
         return f'{self.title} {self.dimension}'
@@ -16,49 +22,77 @@ class Ingredients(models.Model):
 
 class IngredientRecipe(models.Model):
     recipe = models.ForeignKey(
-        "Recipe",
+        'Recipe',
         on_delete=models.CASCADE,
-        related_name='recipe')
+        related_name='recipe_ingredients',
+        verbose_name="Рецепт")
     ingredient = models.ForeignKey(
-        "Ingredients",
+        'Ingredient',
         on_delete=models.CASCADE,
-        related_name='ingredient')
-    amount = models.IntegerField()
+        related_name='get_ingredient',
+        verbose_name="Ингредиент")
+    amount = models.IntegerField(validators=[MinValueValidator(1)])
+
+    class Meta:
+        unique_together = ('ingredient', 'recipe')
+        verbose_name = 'ингредиент рецепта'
+        verbose_name_plural = 'ингредиенты рецепта'
 
     def __str__(self):
-        return f'{self.ingredient.title} {self.amount} {self.ingredient.dimension}'
+        return f'{self.ingredient.title} \
+                 {self.amount} \
+                 {self.ingredient.dimension}'
 
 
 class Recipe(models.Model):
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name='recipes')
-    title = models.CharField(max_length=200)
+        related_name='recipes',
+        verbose_name="Автор")
+    title = models.CharField(max_length=200, verbose_name="Название")
     image = models.ImageField(
         upload_to='recipes/',
         blank=True,
-        null=True)
-    description = models.TextField()
-    ingredients = models.ManyToManyField(
-        "Ingredients",
-        related_name='recipes',
-        through='IngredientRecipe'
+        null=True,
+        verbose_name="Картинка"
     )
-    cooking_time = models.PositiveIntegerField()
+    description = models.TextField(verbose_name="Описание")
+    ingredients = models.ManyToManyField(
+        'Ingredient',
+        related_name='recipes',
+        through='IngredientRecipe',
+        verbose_name='Ингредиент'
+    )
+    cooking_time = models.PositiveIntegerField(
+        verbose_name="Время приготовления, мин"
+    )
     pub_date = models.DateTimeField(
         'date published',
         auto_now_add=True)
+    tags = models.ManyToManyField(
+        'Tag',
+        related_name='recipes',
+        verbose_name='Теги'
+    )
 
-    breakfast = models.BooleanField(
-        default=False, verbose_name='Завтрак'
-    )
-    lunch = models.BooleanField(
-        default=False, verbose_name='Обед'
-    )
-    dinner = models.BooleanField(
-        default=False, verbose_name='Ужин'
-    )
+    class Meta:
+        ordering = ('-pub_date', )
+        verbose_name = 'рецепт'
+        verbose_name_plural = 'рецепты'
+
+    def __str__(self):
+        return self.title
+
+
+class Tag(models.Model):
+    title = models.CharField('Имя тега', max_length=50, db_index=True)
+    display_name = models.CharField('Имя тега для шаблона', max_length=50)
+    color = models.CharField('Цвет тега', max_length=50)
+
+    class Meta:
+        verbose_name = 'тег'
+        verbose_name_plural = 'теги'
 
     def __str__(self):
         return self.title
