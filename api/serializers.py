@@ -1,8 +1,7 @@
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
-
-from recipes.models import Ingredient, FollowUser, FollowRecipe, ShopingList
+from recipes.models import FollowRecipe, FollowUser, Ingredient, ShopingList
 
 
 class CustomModelSerializer(serializers.ModelSerializer):

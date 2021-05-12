@@ -1,8 +1,10 @@
 #@user_passes_test(lambda u: u.is_superuser)
 from recipes.models import Ingredients
 
+
 def add_ingredients():
     import json
+
     from django.http import HttpResponse
 
     with open('ingredients.json', 'r') as fh:

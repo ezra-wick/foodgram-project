@@ -4,13 +4,9 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.views import View
 from rest_framework.utils import json
-from recipes.models import (
-    Ingredient,
-    Recipe,
-    FollowRecipe,
-    FollowUser,
-    ShopingList,
-)
+
+from recipes.models import (FollowRecipe, FollowUser, Ingredient, Recipe,
+                            ShopingList)
 
 
 class IngredientApi(LoginRequiredMixin, View):

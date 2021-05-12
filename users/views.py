@@ -1,10 +1,11 @@
-from django.views.generic import CreateView
-from django.urls import reverse_lazy
-from .forms import CreationForm, PasswordChangingForm
+from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.views import PasswordChangeView
-from django.contrib import messages
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect, render
+from django.urls import reverse_lazy
+from django.views.generic import CreateView
+
+from .forms import CreationForm, PasswordChangingForm
 
 
 class SignUp(CreateView):

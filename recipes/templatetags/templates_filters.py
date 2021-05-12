@@ -1,5 +1,6 @@
 from django import template
-from recipes.models import ShopingList, FollowRecipe, FollowUser, Recipe
+
+from recipes.models import FollowRecipe, FollowUser, Recipe, ShopingList
 
 register = template.Library()
 
