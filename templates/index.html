@@ -1,20 +1,13 @@
+{% extends 'base.html' %}
+{% block title %}Рецепты{% endblock %}
 {% load user_filters %}
 {% load templates_filters %}
-{% csrf_token %}
-<!doctype html>
-<html lang="en">
 {% load static %}
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Рецепты</title>
-    <link rel="stylesheet" href="{% static '/pages/index.css' %}">
-</head>
-<body class="body">
-    
-    {% include 'includes/nav.html' with index=True%}
+{% block static %}
+<link rel="stylesheet" href="{% static '/pages/index.css' %}">
+{% endblock %}
+{% block content %}
+{% include 'includes/nav.html' with index=True%}
     <main class="main container">
         {% csrf_token %}
         <div class="main__header">
@@ -47,5 +40,4 @@
     <script src="{% static 'js/api/Api.js' %}"></script>
     <script src="{% static 'indexNotAuth.js' %}"></script>
     {% endif %}
-</body>
-</html>
+{% endblock %}

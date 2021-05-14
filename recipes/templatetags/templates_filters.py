@@ -24,8 +24,8 @@ def get_filter_link(request, tag):
 
 @register.filter(name='is_shop')
 def is_shop(recipe, user):
-    return ShopingList.objects.select_related('recipe') \
-                      .filter(user=user, recipe=recipe)
+    return (ShopingList.objects.select_related('recipe')
+                      .filter(user=user, recipe=recipe))
 
 
 @register.filter(name='is_favorite')

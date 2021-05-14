@@ -29,7 +29,7 @@ class IngredientRecipe(models.Model):
     ingredient = models.ForeignKey(
         'Ingredient',
         on_delete=models.CASCADE,
-        related_name='get_ingredient',
+        related_name='recipe_ingredients',
         verbose_name="Ингредиент")
     amount = models.IntegerField(validators=[MinValueValidator(1)])
 
@@ -123,7 +123,8 @@ class FollowUser(models.Model):
         related_name='following')
 
     class Meta:
-        unique_together = ['user', 'author']
+        models.UniqueConstraint(fields=['user', 'author'],
+                                name='unique together')
 
     def __str__(self):
         return f'follower - {self.user} following - {self.author}'

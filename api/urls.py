@@ -12,7 +12,7 @@ urlpatterns = [
     path('purchases/', views.Purchase.as_view(), name='purchases'),
     path('purchases/<int:recipe_id>/', views.Purchase.as_view()),
 ]
-# Приношу извинения, я поспешил(((
+
 urlpatterns = [
     path('v1/', include(urlpatterns))
 ]

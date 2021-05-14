@@ -1,16 +1,15 @@
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-from django.db import IntegrityError, transaction
+
 from django.db.models import Count, Sum
-from django.http import HttpResponse, HttpResponseBadRequest
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 
 from foodgram import settings
 
 from .forms import RecipeForm
-from .models import (Ingredient, IngredientRecipe, Recipe, ShopingList, Tag,
-                     User)
-from .utils import get_ingredients
+from .models import Recipe, ShopingList, Tag, User
+from .utils import get_ingredients, save_recipe
 
 TAGS = ['breakfast', 'lunch', 'dinner']
 
@@ -60,35 +59,12 @@ def profile(request, username):
                   )
 
 
-def recipe_view(request, recipe_id):
+def recipe_view(request, recipe_id, username):
     recipe = get_object_or_404(
         Recipe.objects.select_related('author'),
         id=recipe_id)
-    return render(request, 'singlePage.html', {'recipe': recipe})
-
-
-def save_recipe(request, form):
-    try:
-        with transaction.atomic():
-            recipe = form.save(commit=False)
-            recipe.author = request.user
-            recipe.save()
-            objs = []
-            ingredients = get_ingredients(request)
-            for name, quantity in ingredients.items():
-                ingredient = Ingredient.objects.filter(title=name).first()
-                objs.append(
-                    IngredientRecipe(
-                        recipe=recipe,
-                        ingredient=ingredient,
-                        amount=quantity
-                    )
-                )
-            IngredientRecipe.objects.bulk_create(objs)
-            form.save_m2m()
-            return recipe
-    except IntegrityError:
-        raise HttpResponseBadRequest
+    return render(request, 'singlePage.html', {'recipe': recipe,
+                                                'username':username})
 
 
 @login_required
@@ -111,7 +87,7 @@ def recipe_edit(request, username, recipe_id):
                       instance=recipe)
     if not request.user.is_superuser or request.user == recipe.author:
         if form.is_valid():
-            recipe = save_recipe(request, form, ingredients)
+            recipe = save_recipe(request, form)
             return redirect(
                 'recipe_view', recipe_id=recipe.id, username=recipe.author
             )
@@ -199,6 +175,6 @@ def download_card(request):
         file_data, content_type='application/text charset=utf-8'
     )
     filename = 'shopping_list.txt'
-    response['Content-Disposition'] = 'attachment; filename={0}' \
-                                      .format(filename)
+    response['Content-Disposition'] = ('attachment; filename={0}'
+                                      .format(filename))
     return response
