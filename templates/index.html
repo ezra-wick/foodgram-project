@@ -7,7 +7,6 @@
 <link rel="stylesheet" href="{% static '/pages/index.css' %}">
 {% endblock %}
 {% block content %}
-{% include 'includes/nav.html' with index=True%}
     <main class="main container">
         {% csrf_token %}
         <div class="main__header">

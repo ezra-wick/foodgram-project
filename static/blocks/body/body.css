@@ -1,4 +1,5 @@
 .body {
     display: flex;
     flex-direction: column;
+    background-image: linear-gradient(to top, #faffc7, #f0efac, #e8df90, #e0ce75, #dabd5b, #cdba58, #c0b656, #b4b254, #a2b86d, #96bc86, #92be9c, #98bead);
 }

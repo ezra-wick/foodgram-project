@@ -1,9 +1,12 @@
 import os
 from pathlib import Path
+from dotenv import load_dotenv 
+
+load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-uypti3^xvnur_f$@e$5r$g@&o2qtue-feaqc)!h275&u_z))iz'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 DEBUG = True
 
@@ -118,7 +121,7 @@ else:
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-APPEND_SLASH=False 
+# APPEND_SLASH=False 
 
 PAGINATE_BY = 3
 
@@ -126,8 +129,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER ='nasirli.tofik@gmail.com'
-EMAIL_HOST_PASSWORD ='Sabina17!'
+EMAIL_HOST_USER = os.getenv('EMAIL_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_PASS')
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True 
 

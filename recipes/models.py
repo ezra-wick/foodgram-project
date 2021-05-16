@@ -34,7 +34,11 @@ class IngredientRecipe(models.Model):
     amount = models.IntegerField(validators=[MinValueValidator(1)])
 
     class Meta:
-        unique_together = ('ingredient', 'recipe')
+        #unique_together = ('ingredient', 'recipe')
+        constraints = [
+            models.UniqueConstraint(fields=['ingredient', 'recipe'],
+                                    name='unique ingredient and recipe')
+        ]
         verbose_name = 'ингредиент рецепта'
         verbose_name_plural = 'ингредиенты рецепта'
 
@@ -123,8 +127,10 @@ class FollowUser(models.Model):
         related_name='following')
 
     class Meta:
-        models.UniqueConstraint(fields=['user', 'author'],
-                                name='unique together')
+        constraints = [
+            models.UniqueConstraint(fields=['user', 'author'],
+                                    name='unique together')
+        ]
 
     def __str__(self):
         return f'follower - {self.user} following - {self.author}'

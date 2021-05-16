@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="{% static '/pages/single.css' %}">
 {% endblock %}
 {% block content %}
-{% include 'includes/nav.html' with index=True %}
 <main class="main container">
     <div class="single-card" data-id="{{ recipe.id }}" data-author="{{ recipe.author.id }}">
     {% load thumbnail %}

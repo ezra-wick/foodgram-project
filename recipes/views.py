@@ -8,7 +8,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from foodgram import settings
 
 from .forms import RecipeForm
-from .models import Recipe, ShopingList, Tag, User
+from .models import Recipe, ShopingList, Tag, User, IngredientRecipe
 from .utils import get_ingredients, save_recipe
 
 TAGS = ['breakfast', 'lunch', 'dinner']
@@ -63,8 +63,10 @@ def recipe_view(request, recipe_id, username):
     recipe = get_object_or_404(
         Recipe.objects.select_related('author'),
         id=recipe_id)
+    ingredients = IngredientRecipe.objects.filter(recipe=recipe)
     return render(request, 'singlePage.html', {'recipe': recipe,
-                                                'username':username})
+                                                'username': username,
+                                                'ingredients': ingredients})
 
 
 @login_required
@@ -110,13 +112,13 @@ def follow_index(request):
     ).prefetch_related(
         'recipes'
     ).annotate(recipe_count=Count('recipes')).order_by('username')
-
     paginator = Paginator(follow, settings.PAGINATE_BY)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
     return render(request, 'myFollow.html', {
         'page': page,
         'paginator': paginator,
+        'follow': follow,
     }
     )
 
