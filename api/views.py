@@ -11,7 +11,7 @@ from recipes.models import (FollowRecipe, FollowUser, Ingredient, Recipe,
 
 class IngredientApi(LoginRequiredMixin, View):
     def get(self, request):
-        text = request.GET['query']
+        text = request.GET.get('query')
         if text is not None:
             ingredients = list(Ingredient.objects.filter(
                 title__icontains=text).values('title', 'dimension'))
@@ -62,7 +62,8 @@ class Subscribe(LoginRequiredMixin, View):
 
 class Purchase(LoginRequiredMixin, View):
     def post(self, request):
-        recipe_id = json.loads(request.body)['id']
+        req = json.loads(request.body)
+        recipe_id = req.get('id')
         if recipe_id is not None:
             recipe = get_object_or_404(Recipe, id=recipe_id)
             ShopingList.objects.get_or_create(user=request.user, recipe=recipe)
