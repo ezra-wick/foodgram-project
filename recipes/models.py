@@ -34,7 +34,6 @@ class IngredientRecipe(models.Model):
     amount = models.IntegerField(validators=[MinValueValidator(1)])
 
     class Meta:
-        #unique_together = ('ingredient', 'recipe')
         constraints = [
             models.UniqueConstraint(fields=['ingredient', 'recipe'],
                                     name='unique ingredient and recipe')

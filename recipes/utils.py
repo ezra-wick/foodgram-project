@@ -1,5 +1,5 @@
 from .models import (Ingredient,
-                    IngredientRecipe)
+                     IngredientRecipe)
 from django.db import IntegrityError, transaction
 from django.http import HttpResponseBadRequest
 

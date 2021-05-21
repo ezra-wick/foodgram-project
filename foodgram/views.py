@@ -12,7 +12,7 @@ def server_error(request):
 
 class AboutPage(TemplateView):
     template_name = 'flatpages/about.html'
- 
-     
+
+
 class SpecPage(TemplateView):
     template_name = 'flatpages/technologies.html'

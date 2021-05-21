@@ -65,8 +65,8 @@ def recipe_view(request, recipe_id, username):
         id=recipe_id)
     ingredients = IngredientRecipe.objects.filter(recipe=recipe)
     return render(request, 'singlePage.html', {'recipe': recipe,
-                                                'username': username,
-                                                'ingredients': ingredients})
+                                               'username': username,
+                                               'ingredients': ingredients})
 
 
 @login_required
@@ -83,7 +83,6 @@ def new_recipe(request):
 @login_required
 def recipe_edit(request, username, recipe_id):
     recipe = get_object_or_404(Recipe, id=recipe_id)
-    ingredients = get_ingredients(request)
     form = RecipeForm(request.POST or None,
                       files=request.FILES or None,
                       instance=recipe)
@@ -178,5 +177,5 @@ def download_card(request):
     )
     filename = 'shopping_list.txt'
     response['Content-Disposition'] = ('attachment; filename={0}'
-                                      .format(filename))
+                                       .format(filename))
     return response
