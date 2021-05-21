@@ -13,7 +13,8 @@ class CreationForm(UserCreationForm):
     first_name = forms.CharField(label='Имя', max_length=200,
                                  widget=forms.TextInput(
                                         {"placeholder": "Василий"}
-                                        ))
+                                                        )
+                                 )
     email = forms.EmailField(required=True,
                              max_length=200,
                              label='Email',
