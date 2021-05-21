@@ -14,6 +14,7 @@ services:
   web:
     image: ezrawick/foodgram:latest
     restart: always
+    command: gunicorn foodgram.wsgi:application --bind 0.0.0.0:8000 --access-logfile -
     volumes:
       - static_data:/usr/src/web/static/
       - media_data:/usr/src/web/media
@@ -23,7 +24,7 @@ services:
       - db
 
   nginx:
-    image: nginx:1.19.6-alpine
+    image: nginx:1.19
     restart: always
     container_name: nginx
     volumes:
