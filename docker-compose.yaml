@@ -28,12 +28,13 @@ services:
       - db
 
   nginx:
+    container_name: nginx
     image: nginx:1.19.6
     restart: always
     volumes:
-      - ./nginx/default.conf:/etc/nginx/conf.d
-      - static_value:/app/static/
+      - static_volume:/app/static/
       - media_volume:/app/media/
+      - ./nginx/default.conf:/etc/nginx/conf.d
     ports:
       - "80:80"
     depends_on:
