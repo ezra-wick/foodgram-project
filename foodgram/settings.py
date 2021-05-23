@@ -121,11 +121,8 @@ CACHES = {
 }
 
 STATIC_URL = '/static/'
-_STATIC_ROOT = BASE_DIR / 'static'
-if DEBUG:
-    STATICFILES_DIRS = (_STATIC_ROOT, )
-else:
-    STATIC_ROOT = _STATIC_ROOT
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static/'),)
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
