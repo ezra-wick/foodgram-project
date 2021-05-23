@@ -28,13 +28,14 @@ services:
       - db
 
   nginx:
-    build: ./nginx
-    depends_on:
-      - web
-    ports:
-      - 80:80
+    image: nginx:1.19.6
+    restart: always
     volumes:
-      - static_volume:/code/static
-      - media_volume:/code/media
-    links:
-      - web
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./static:/app/static/
+      - ./media:/app/media/
+    ports:
+      - "80:80"
+    depends_on:
+      - web 
+
