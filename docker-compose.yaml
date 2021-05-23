@@ -32,8 +32,8 @@ services:
     restart: always
     volumes:
       - ./nginx/default.conf:/etc/nginx/conf.d
-      - ./static:/app/static/
-      - ./media:/app/media/
+      - static_value:/app/static/
+      - media_volume:/app/media/
     ports:
       - "80:80"
     depends_on:
