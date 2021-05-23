@@ -69,7 +69,7 @@ jobs:
         key: ${{ secrets.SSH_KEY }}
         passphrase: ${{ secrets.PASSPHRASE }}
         script: |
-            sudo apt-get update -y
+          sudo apt-get update -y
           sudo apt-get remove docker docker-engine docker.io -y
           sudo apt install docker.io docker-compose -y
           sudo systemctl start docker
