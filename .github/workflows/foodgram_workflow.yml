@@ -57,6 +57,7 @@ jobs:
         username: ${{ secrets.USER }}
         key: ${{ secrets.SSH_KEY }}
         passphrase: ${{ secrets.PASSPHRASE }}
+        port: 22
         source: 'docker-compose.yaml, config/nginx/default.conf'
         target: '/home/${{ secrets.USER }}/app'
 
@@ -68,7 +69,7 @@ jobs:
         key: ${{ secrets.SSH_KEY }}
         passphrase: ${{ secrets.PASSPHRASE }}
         script: |
-          sudo apt-get update -y
+            sudo apt-get update -y
           sudo apt-get remove docker docker-engine docker.io -y
           sudo apt install docker.io docker-compose -y
           sudo systemctl start docker
@@ -87,6 +88,6 @@ jobs:
     - name: send message
       uses: appleboy/telegram-action@master
       with:
-        to: ${{ secrets.CHAT_ID }}
+        to: ${{ secrets.TELEGRAM_TO }}
         token: ${{ secrets.TELEGRAM_TOKEN }}
         message: ${{ github.workflow }} по адресу http://${{ secrets.HOST }} успешно выполнен!
