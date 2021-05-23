@@ -1,14 +1,14 @@
 # Foodgram
 
 
-![foodgram-project](https://github.com/tuda-suda/foodgram-project/workflows/Foodgram/badge.svg)
+![foodgram-project](https://github.com/ezra-wick/foodgram-project/workflows/Foodgram/badge.svg)
 
 
 ### Description
 Foodgram is a site that lets you create your own recipes and share them with other people. You can also subscribe to recipe authors and add recipes to your shop-list - 
 and download the list with all ingredients you need.
 
-The site is available on http://84.201.159.80
+The site is available on http://130.193.53.197
 
 
 ## Tech stack
@@ -22,7 +22,7 @@ The site is available on http://84.201.159.80
 ## Setup
 - Clone the github repository
     ```
-    git clone https://github.com/tuda-suda/foodgram-project.git
+    git clone https://github.com/ezra-wick/foodgram-project.git
     ```
 - Enter the project directory
     ```
@@ -40,4 +40,8 @@ The site is available on http://84.201.159.80
 - Load test data
     ```
     docker-compose -f docker-compose.yaml run --rm web python manage.py loaddata fixtures.json
+    ```
+- Load ingredients
+    ```
+    docker-compose -f docker-compose.yaml run --rm web python manage.py enter_data
     ```
