@@ -15,7 +15,7 @@ fi
 python manage.py flush --no-input
 python manage.py makemigrations
 python manage.py migrate --run-syncdb
-python manage.py loaddata dump.json
+python manage.py loaddata fixtures.json
 python manage.py collectstatic --no-input
 
 exec "$@"

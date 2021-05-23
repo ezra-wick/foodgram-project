@@ -28,14 +28,13 @@ services:
       - db
 
   nginx:
-    container_name: nginx
-    restart: always
-    image: nginx:1.19
-    volumes:
-      - static_volume:/app/static/
-      - media_volume:/app/media/
-      - ./config/nginx/:/etc/nginx/conf.d
+    build: ./nginx
+    depends_on:
+      - web
     ports:
       - 80:80
-    depends_on:
+    volumes:
+      - static_volume:/code/static
+      - media_volume:/code/media
+    links:
       - web
