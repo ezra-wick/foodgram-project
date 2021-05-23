@@ -12,7 +12,7 @@ The site is available on http://130.193.53.197
 
 
 ## Tech stack
-- Python 3.8
+- Python 3.9
 - Django and Django Rest Framework
 - PostgreSQL
 - Gunicorn + Nginx
