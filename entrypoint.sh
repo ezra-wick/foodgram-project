@@ -13,8 +13,9 @@ then
 fi
 
 python manage.py makemigrations
-python manage.py migrate
-python manage.py loaddata dump.json
+python manage.py migrate --run-syncdb
+python manage.py enter_data
+python manage.py loaddata fixtures.json
 python manage.py collectstatic
 
 exec "$@"

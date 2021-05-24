@@ -16,7 +16,7 @@ class Command(BaseCommand):
                                                  dimension=ingredient[1])
 
         with open('data/tags.csv', encoding='utf-8') as file:
-            file_reader = csv.reader(file, engine='python')
+            file_reader = csv.reader(file)
             print(file_reader)
             for tags in file_reader:
                 Tag.objects.get_or_create(title=tags[0],
