@@ -70,6 +70,8 @@ jobs:
         passphrase: ${{ secrets.PASSPHRASE }}
         script: |
           sudo apt-get update -y
+          sudo docker-compose down
+          sudo docker system prune
           sudo apt-get remove docker docker-engine docker.io -y
           sudo apt install docker.io docker-compose -y
           sudo systemctl start docker
