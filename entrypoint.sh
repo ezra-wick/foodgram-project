@@ -14,6 +14,7 @@ fi
 
 python manage.py makemigrations
 python manage.py migrate
+python manage.py migrate --run-syncdb
 python manage.py loaddata fixtures.json
 python manage.py collectstatic
 
