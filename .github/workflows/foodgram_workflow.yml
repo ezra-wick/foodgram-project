@@ -58,7 +58,7 @@ jobs:
         username: ${{ secrets.USER }}
         key: ${{ secrets.SSH_KEY }}
         passphrase: ${{ secrets.PASSPHRASE }}
-        source: 'docker-compose.yaml, nginx/default.conf'
+        source: 'docker-compose.yaml, /nginx/default.conf'
         target: '/home/${{ secrets.USER }}/app'
 
     - name: Execute remote ssh commands to deploy
