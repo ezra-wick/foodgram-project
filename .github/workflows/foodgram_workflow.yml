@@ -75,6 +75,9 @@ jobs:
           sudo systemctl start docker
           sudo systemctl enable docker
           cd ~/app/
+          sudo docker-compose down
+          sudo docker rm -f $(sudo docker ps -aq)
+          sudo docker rmi -f $(sudo docker images -aq)
           sudo docker pull ezrawick/foodgram
           sudo docker-compose stop
           sudo docker-compose rm web
