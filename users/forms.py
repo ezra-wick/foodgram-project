@@ -9,7 +9,7 @@ class CreationForm(UserCreationForm):
     username = forms.CharField(max_length=191,
                                label='Имя пользователя',
                                widget=forms.TextInput({
-                                       "placeholder": "Nickname"}))
+                                       "placeholder": "nickname"}))
     first_name = forms.CharField(label='Имя', max_length=200,
                                  widget=forms.TextInput(
                                         {"placeholder": "Василий"}
@@ -19,7 +19,7 @@ class CreationForm(UserCreationForm):
                              max_length=200,
                              label='Email',
                              widget=forms.TextInput({
-                                  "placeholder": "ivan@mail.ru"}))
+                                  "placeholder": "vasiliy@mail.ru"}))
     password1 = forms.CharField(widget=forms.PasswordInput(
                                 attrs={'class': 'form-control',
                                        'type': 'password',
