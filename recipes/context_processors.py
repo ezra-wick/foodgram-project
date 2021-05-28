@@ -1,5 +1,6 @@
 from .models import ShopingList
 
+
 def get_shop_list(request):
     """ Количество рецептов списке покупок. """
     if request.user.is_authenticated:
