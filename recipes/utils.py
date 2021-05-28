@@ -2,7 +2,7 @@ from .models import (Ingredient,
                      IngredientRecipe)
 from django.db import IntegrityError, transaction
 from django.http import HttpResponseBadRequest
-from django.shortcuts import render
+
 
 def get_ingredients(request):
     ingredients = {}
@@ -33,8 +33,6 @@ def save_recipe(request, form, ingredients):
                         amount=quantity
                     )
                 )
-                
-                
             IngredientRecipe.objects.bulk_create(objs)
             form.save_m2m()
             return recipe

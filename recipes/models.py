@@ -32,8 +32,8 @@ class IngredientRecipe(models.Model):
         related_name='recipe_ingredients',
         verbose_name="Ингредиент")
     amount = models.DecimalField(max_digits=6,
-        decimal_places=0,
-        validators=[MinValueValidator(1)]
+                                 decimal_places=0,
+                                 validators=[MinValueValidator(1)]
     )
 
     class Meta:
