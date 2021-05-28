@@ -31,7 +31,10 @@ class IngredientRecipe(models.Model):
         on_delete=models.CASCADE,
         related_name='recipe_ingredients',
         verbose_name="Ингредиент")
-    amount = models.IntegerField(validators=[MinValueValidator(1)])
+    amount = models.DecimalField(max_digits=6,
+        decimal_places=0,
+        validators=[MinValueValidator(1)]
+    )
 
     class Meta:
         constraints = [

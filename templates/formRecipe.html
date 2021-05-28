@@ -38,11 +38,11 @@
                             </div>
                           {% endfor %}
                         </div>
-                        {% for error in form.errors %}
+                        {% if form.errors %}
                         <span class="form__error">
-                            {{ error }}
+                            Выберите тег
                         </span>
-                        {% endfor %}
+                        {% endif %}
                     </div>
                 </div>
                 
@@ -69,7 +69,11 @@
                         {% endfor %}
                       </div>
                       <span class="form__ingredient-link" id="addIng">Добавить ингредиент</span>
-                      <span class="form__error"></span>
+                      {% for error in form.non_field_errors %}
+                      <span class="form__error">
+                          {{ error }}
+                      </span>
+                      {% endfor %}
                     </div>
                   </div>
                 <div class="form__group">

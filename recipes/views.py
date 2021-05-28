@@ -72,8 +72,12 @@ def recipe_view(request, recipe_id, username):
 @login_required
 def new_recipe(request):
     form = RecipeForm(request.POST or None, files=request.FILES or None)
+    ingredients = get_ingredients(request)
+    for quantity in ingredients.values():
+        if quantity < 1:
+            form.add_error(None, "Кол-во ингридиентов не должно быть отрицательным") 
     if form.is_valid():
-        recipe = save_recipe(request, form)
+        recipe = save_recipe(request, form, ingredients)
         return redirect(
             'recipe_view', recipe_id=recipe.id, username=recipe.author
         )
@@ -86,9 +90,13 @@ def recipe_edit(request, username, recipe_id):
     form = RecipeForm(request.POST or None,
                       files=request.FILES or None,
                       instance=recipe)                
+    ingredients = get_ingredients(request)
+    for quantity in ingredients.values():
+        if quantity < 1:
+            form.add_error(None, "Кол-во ингридиентов не должно быть отрицательным") 
     if not request.user.is_superuser or request.user == recipe.author:
         if form.is_valid():
-            recipe = save_recipe(request, form)
+            recipe = save_recipe(request, form, ingredients)
             return redirect(
                 'recipe_view', recipe_id=recipe.id, username=recipe.author
             )

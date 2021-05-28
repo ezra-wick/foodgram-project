@@ -2,7 +2,7 @@ from .models import (Ingredient,
                      IngredientRecipe)
 from django.db import IntegrityError, transaction
 from django.http import HttpResponseBadRequest
-
+from django.shortcuts import render
 
 def get_ingredients(request):
     ingredients = {}
@@ -15,15 +15,16 @@ def get_ingredients(request):
     return ingredients
 
 
-def save_recipe(request, form):
+def save_recipe(request, form, ingredients):
     try:
         with transaction.atomic():
             recipe = form.save(commit=False)
             recipe.author = request.user
             recipe.save()
             objs = []
-            ingredients = get_ingredients(request)
             for name, quantity in ingredients.items():
+                if quantity < 1:
+                    form.add_error(None, "Кол-во ингридиентов не должно быть отрицательным")
                 ingredient = Ingredient.objects.filter(title=name).first()
                 objs.append(
                     IngredientRecipe(
@@ -32,6 +33,8 @@ def save_recipe(request, form):
                         amount=quantity
                     )
                 )
+                
+                
             IngredientRecipe.objects.bulk_create(objs)
             form.save_m2m()
             return recipe
