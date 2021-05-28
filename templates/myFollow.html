@@ -12,44 +12,46 @@
 
 <main class="main container">
     {% csrf_token %}
-        <div class="main__header">
-            <h1 class="main__title">Мои подписки</h1>
-        </div>
-        {% for follow in page %}
+            <div class="main__header">
+                <h1 class="main__title">Мои подписки</h1>
+            </div>
     <div class="card-list">
+        {% for follow in page %}
         <div class="card-user" data-author="{{ follow.id }}">
-        <div class="card-user__header">
-            <h2 class="card-user__title">{{ follow.username }}</h2>
-        </div>
-        <div class="card-user__body">
-            <ul class="card-user__items">
-                {% for recipe in follow|get_recipes %}
-                <li class="card-user__item">
-                    <div class="recipe {% if shop_list %}recipe_reverse{% endif %}">
-                    {% load thumbnail %}
-                        {% thumbnail recipe.image "250x250" crop="center" upscale=True as im %}
-                        <img src="{{ im.url }}" alt="The author of the recipe did not add a photo" class="recipe__image">
-                        {% endthumbnail %}
-                        <h3 class="recipe__title"><a href="{% url 'recipe_view' recipe.author.username recipe.id %}">{{ recipe.title }}</a></h3>
-                        <p class="recipe__text"><span class="icon-time"></span> {{ recipe.cooking_time }} minutes</p>
-                    </div>
-                </li>
-                {% endfor %}
-                {% if follow|get_count_recipes %}
-                <li class="card-user__item">
-                    <a href="{% url 'profile' follow %}" class="card-user__link link">{{ follow|get_count_recipes }}</a>
-                </li>
-                {% endif %}
-            </ul>
-        </div>
-        <div class="card-user__footer">
-            <button class="button button_style_light-blue button_size_auto" name="subscribe">Отписаться</button>
-        </div>
+            <div class="card-user__header">
+                <h2 class="card-user__title">{{ follow.username }}</h2>
+            </div>
+            <div class="card-user__body">
+                <ul class="card-user__items">
+                    {% for recipe in follow.recipes.all %}
+                    <li class="card-user__item">
+                        <div class="recipe {% if shop_list %}recipe_reverse{% endif %}">
+                        {% load thumbnail %}
+                            {% thumbnail recipe.image "250x250" crop="center" upscale=True as im %}
+                            <img src="{{ im.url }}" alt="The author of the recipe did not add a photo" class="recipe__image">
+                            {% endthumbnail %}
+                            <h3 class="recipe__title"><a href="{% url 'recipe_view' recipe.author.username recipe.id %}">{{ recipe.title }}</a></h3>
+                            <p class="recipe__text"><span class="icon-time"></span> {{ recipe.cooking_time }} minutes</p>
+                        </div>
+                    </li>
+                    {% endfor %}
+                    {% if follow|get_count_recipes %}
+                    <li class="card-user__item">
+                        <a href="{% url 'profile' follow %}" class="card-user__link link">{{ follow|get_count_recipes }}</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+            <div class="card-user__footer">
+                <button class="button button_style_light-blue button_size_auto" name="subscribe">Отписаться</button>
+            </div>
+        </div> 
+        {% endfor %}   
     </div>
-</div>
-{% endfor %}
+  
 {% include "includes/paginator.html" %}
-</main>    
+  
+</main>
 <script src="{% static 'js/config/config.js' %}"></script>
 <script src="{% static 'js/components/MainCards.js' %}"></script>
 <script src="{% static 'js/components/MyFollow.js' %}"></script>
