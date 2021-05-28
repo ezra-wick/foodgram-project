@@ -1,137 +1,122 @@
 class Api {
   constructor(apiUrl) {
-      this.apiUrl =  apiUrl;
+    this.apiUrl = apiUrl;
   }
-getPurchases () {
-  return fetch(`$(this.apiUrl)/api/v1/purchases/`, {
-    headers: {
-      'Content-Type': 'application/json',
-      'X-CSRFToken': document.getElementsByName('csrfmiddlewaretoken')[0].value
 
+  async getPurchases() {
+    const e = await fetch(`/api/v1/purchases/`, {
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+    if (e.ok) {
+      return e.json();
     }
-  })
-    .then( e => {
-        if(e.ok) {
-            return e.json()
-        }
-        return Promise.reject(e.statusText)
-    })
-}
-addPurchases (id) {
-  return fetch(`/api/v1/purchases/`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'X-CSRFToken': document.getElementsByName('csrfmiddlewaretoken')[0].value
+    return await Promise.reject(e.statusText);
+  }
 
-    },
-    body: JSON.stringify({
-      id: id
-    })
-  })
-    .then( e => {
-        if(e.ok) {
-            return e.json()
-        }
-        return Promise.reject(e.statusText)
-    })
-}
-removePurchases (id){
-  return fetch(`/api/v1/purchases/${id}/`, {
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json',
-      'X-CSRFToken': document.getElementsByName('csrfmiddlewaretoken')[0].value
-
-    }
-  })
-    .then( e => {
-        if(e.ok) {
-            return e.json()
-        }
-        return Promise.reject(e.statusText)
-    })
-}
-addSubscriptions(id) {
-  return fetch(`/api/v1/subscriptions/`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'X-CSRFToken': document.getElementsByName('csrfmiddlewaretoken')[0].value
-
-    },
-    body: JSON.stringify({
-      id: id
-    })
-  })
-    .then( e => {
-        if(e.ok) {
-            return e.json()
-        }
-        return Promise.reject(e.statusText)
-    })
-}
-removeSubscriptions (id) {
-  return fetch(`/api/v1/subscriptions/${id}/`, {
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json',
-      'X-CSRFToken': document.getElementsByName('csrfmiddlewaretoken')[0].value
-
-    }
-  })
-    .then( e => {
-        if(e.ok) {
-            return e.json()
-        }
-        return Promise.reject(e.statusText)
-    })
-}
-addFavorites (id)  {
-  return fetch(`/api/v1/favorites/`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
+  async addPurchases(id) {
+    const e = await fetch(`/api/v1/purchases/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
         'X-CSRFToken': document.getElementsByName('csrfmiddlewaretoken')[0].value
-    },
-    body: JSON.stringify({
-      id: id
-    })
-  })
-      .then( e => {
-          if(e.ok) {
-              return e.json()
-          }
-          return Promise.reject(e.statusText)
+      },
+      body: JSON.stringify({
+        recipe: id
       })
-}
-removeFavorites (id) {
-  return fetch(`/api/v1/favorites/${id}/`, {
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json',
-      'X-CSRFToken': document.getElementsByName('csrfmiddlewaretoken')[0].value
+    });
+    if (e.ok) {
+      return e.json();
     }
-  })
-      .then( e => {
-          if(e.ok) {
-              return e.json()
-          }
-          return Promise.reject(e.statusText)
+    return await Promise.reject(e.statusText);
+  }
+
+  async removePurchases(id) {
+    const e = await fetch(`/api/v1/purchases/${id}/`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': document.getElementsByName('csrfmiddlewaretoken')[0].value
+      }
+    });
+    if (e.ok) {
+      return e.json();
+    }
+    return await Promise.reject(e.statusText);
+  }
+
+  async addSubscriptions(id) {
+    const e = await fetch(`/api/v1/subscriptions/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': document.getElementsByName('csrfmiddlewaretoken')[0].value
+      },
+      body: JSON.stringify({
+        id: id,
       })
-}
-getIngredients  (text)  {
-      return fetch(`/api/v1/ingredients?query=${text}`, {
-          headers: {
-              'Content-Type': 'application/json',
-              'X-CSRFToken': document.getElementsByName('csrfmiddlewaretoken')[0].value
-          }
+    });
+    if (e.ok) {
+      return e.json();
+    }
+    return await Promise.reject(e.statusText);
+  }
+
+  async removeSubscriptions(id) {
+    const e = await fetch(`/api/v1/subscriptions/${id}/`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': document.getElementsByName('csrfmiddlewaretoken')[0].value
+      }
+    });
+    if (e.ok) {
+      return e.json();
+    }
+    return await Promise.reject(e.statusText);
+  }
+
+  async addFavorites(id) {
+    const e = await fetch(`/api/v1/favorites/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': document.getElementsByName('csrfmiddlewaretoken')[0].value
+      },
+      body: JSON.stringify({
+        recipe: id
       })
-          .then( e => {
-              if(e.ok) {
-                  return e.json()
-              }
-              return Promise.reject(e.statusText)
-          })
+    });
+    if (e.ok) {
+      return e.json();
+    }
+    return await Promise.reject(e.statusText);
+  }
+
+  async removeFavorites(id) {
+    const e = await fetch(`/api/v1/favorites/${id}/`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': document.getElementsByName('csrfmiddlewaretoken')[0].value
+      }
+    });
+    if (e.ok) {
+      return e.json();
+    }
+    return await Promise.reject(e.statusText);
+  }
+  
+  async getIngredients(text) {
+    const e = await fetch(`/api/v1/ingredients?query=${text}`, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    if (e.ok) {
+      return e.json();
+    }
+    return await Promise.reject(e.statusText);
   }
 }

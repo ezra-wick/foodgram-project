@@ -85,7 +85,7 @@ def recipe_edit(request, username, recipe_id):
     recipe = get_object_or_404(Recipe, id=recipe_id)
     form = RecipeForm(request.POST or None,
                       files=request.FILES or None,
-                      instance=recipe)
+                      instance=recipe)                
     if not request.user.is_superuser or request.user == recipe.author:
         if form.is_valid():
             recipe = save_recipe(request, form)

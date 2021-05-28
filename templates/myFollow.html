@@ -9,22 +9,23 @@
 {% load templates_filters%}
 
 {% block content %}
-{% csrf_token %}
+
 <main class="main container">
+    {% csrf_token %}
         <div class="main__header">
             <h1 class="main__title">Мои подписки</h1>
         </div>
         {% for follow in page %}
     <div class="card-list">
-        <div class="card-user" data-author="{{ follow.pk }}">
+        <div class="card-user" data-author="{{ follow.id }}">
         <div class="card-user__header">
-            <h2 class="card-user__title">{{ follow }}</h2>
+            <h2 class="card-user__title">{{ follow.username }}</h2>
         </div>
         <div class="card-user__body">
             <ul class="card-user__items">
                 {% for recipe in follow|get_recipes %}
                 <li class="card-user__item">
-                    <div class="recipe">
+                    <div class="recipe {% if shop_list %}recipe_reverse{% endif %}">
                     {% load thumbnail %}
                         {% thumbnail recipe.image "250x250" crop="center" upscale=True as im %}
                         <img src="{{ im.url }}" alt="The author of the recipe did not add a photo" class="recipe__image">
@@ -47,7 +48,7 @@
     </div>
 </div>
 {% endfor %}
-{% include "paginator.html" %}
+{% include "includes/paginator.html" %}
 </main>    
 <script src="{% static 'js/config/config.js' %}"></script>
 <script src="{% static 'js/components/MainCards.js' %}"></script>

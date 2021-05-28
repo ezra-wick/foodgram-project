@@ -5,6 +5,8 @@ class Header {
         this.counterNum = this.counter.textContent;
         this.plusCounter = this.plusCounter.bind(this);
         this.minusCounter = this.minusCounter.bind(this);
+
+        
     }
 
     plusCounter  ()  {
@@ -14,5 +16,6 @@ class Header {
     minusCounter ()  {
         this.counterNum = --this.counterNum;
         this.counter.textContent = this.counterNum;
+
     }
 }
