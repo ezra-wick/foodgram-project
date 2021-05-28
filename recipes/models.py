@@ -33,8 +33,7 @@ class IngredientRecipe(models.Model):
         verbose_name="Ингредиент")
     amount = models.DecimalField(max_digits=6,
                                  decimal_places=0,
-                                 validators=[MinValueValidator(1)]
-    )
+                                 validators=[MinValueValidator(1)])
 
     class Meta:
         constraints = [
