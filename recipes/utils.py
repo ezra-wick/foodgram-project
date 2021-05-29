@@ -37,6 +37,7 @@ def save_recipe(request, form, ingredients):
     except IntegrityError:
         raise HttpResponseBadRequest
 
+
 def edit_recipe(request, form, instance, ingredients):
     try:
         with transaction.atomic():
