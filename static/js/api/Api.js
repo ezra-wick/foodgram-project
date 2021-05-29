@@ -4,7 +4,7 @@ class Api {
   }
 
   async getPurchases() {
-    const e = await fetch(`/api/v1/purchases/`, {
+    const e = await fetch(`$(this.apiUrl)/api/v1/purchases/`, {
       headers: {
         'Content-Type': 'application/json',
       }
@@ -23,7 +23,7 @@ class Api {
         'X-CSRFToken': document.getElementsByName('csrfmiddlewaretoken')[0].value
       },
       body: JSON.stringify({
-        recipe: id
+        id: id
       })
     });
     if (e.ok) {
@@ -85,7 +85,7 @@ class Api {
         'X-CSRFToken': document.getElementsByName('csrfmiddlewaretoken')[0].value
       },
       body: JSON.stringify({
-        recipe: id
+        id: id
       })
     });
     if (e.ok) {

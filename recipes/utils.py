@@ -23,8 +23,6 @@ def save_recipe(request, form, ingredients):
             recipe.save()
             objs = []
             for name, quantity in ingredients.items():
-                if quantity < 1:
-                    form.add_error(None, "Кол-во ингридиентов не должно быть отрицательным")
                 ingredient = Ingredient.objects.filter(title=name).first()
                 objs.append(
                     IngredientRecipe(
@@ -36,5 +34,13 @@ def save_recipe(request, form, ingredients):
             IngredientRecipe.objects.bulk_create(objs)
             form.save_m2m()
             return recipe
+    except IntegrityError:
+        raise HttpResponseBadRequest
+
+def edit_recipe(request, form, instance, ingredients):
+    try:
+        with transaction.atomic():
+            IngredientRecipe.objects.filter(recipe=instance).delete()
+            return save_recipe(request, form, ingredients)
     except IntegrityError:
         raise HttpResponseBadRequest
